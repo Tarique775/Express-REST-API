@@ -50,10 +50,15 @@ controllers.loginController = async (req, res, next) => {
                     const token = await jwt.sign({ email: user.email, _id: user._id }, 'secret', {
                         expiresIn: '2h',
                     });
-                    res.status(200).json({
-                        message: 'Login Successfull!',
-                        token,
-                    });
+                    res.status(200)
+                        .cookie('jwt', token, {
+                            expires: new Date(Date.now() + 120 * 60 * 1000),
+                            httpOnly: true,
+                        })
+                        .json({
+                            message: 'Login Successfull!',
+                            token,
+                        });
                 } else {
                     res.status(500).json({
                         message: "Login Failed! Password doesn't match!",
