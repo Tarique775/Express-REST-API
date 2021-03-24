@@ -75,4 +75,13 @@ controllers.loginController = async (req, res, next) => {
     }
 };
 
+controllers.postLogOutUser = async (req, res, next) => {
+    try {
+        res.clearCookie('jwt');
+        res.status(200).json({ message: 'Logout successfully!!' });
+    } catch (err) {
+        next(err);
+    }
+};
+
 module.exports = controllers;

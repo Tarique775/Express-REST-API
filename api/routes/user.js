@@ -10,4 +10,6 @@ router.post('/login', userController.loginController);
 
 router.post('/register', userController.registerController);
 
+router.post('/logout', authenticate, userController.postLogOutUser);
+
 module.exports = router;
