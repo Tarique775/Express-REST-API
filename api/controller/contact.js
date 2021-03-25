@@ -13,27 +13,23 @@ controllers.getAllContactUsers = async (req, res, next) => {
 
 controllers.postNewContatUsers = async (req, res, next) => {
     try {
-        const contact = new Contact({
-            name: req.body.name,
-            phone: req.body.phone,
-            email: req.body.email,
-    });
+        const { name, phone, email } = req.body;
 
+        if (!name || !phone || !email) {
+            return res.status(400).json({ message: 'please filup the field property!' });
+        }
+
+        const findContact = await Contact.findOne({ email });
+        if (findContact) {
+            return res.status(422).json({ message: 'email allready exists!' });
+        }
+
+        const contact = new Contact({ name, phone, email });
         const contactNewUser = await contact.save();
         res.status(200).json(contactNewUser);
     } catch (err) {
         next(err);
     }
-
-    // contact
-    //     .save()
-    //     .then((data) => {
-    //         res.status(200).json({
-    //             message: 'contact added',
-    //             data,
-    //         });
-    // })
-    //     .catch((err) => next(err));
 };
 
 controllers.getSingleContact = async (req, res, next) => {
