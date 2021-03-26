@@ -9,6 +9,10 @@ const userSchema = new Schema({
     email: {
         type: String,
         trim: true,
+        match: [
+            /^([a-zA-Z0-9]+(?:[.-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:[.-]?[a-zA-Z0-9]+)*\.[a-zA-Z]{2,7})$/g,
+            'value is not an email!',
+        ],
         validate: {
             validator: (v) => {
                 if (v) {
@@ -22,13 +26,13 @@ const userSchema = new Schema({
         type: String,
         trim: true,
         required: true,
-        minLength: 7,
+        minLength: [7, 'required at least 7 digit!'],
     },
     cpassword: {
         type: String,
         trim: true,
         required: true,
-        minLength: 7,
+        minLength: [7, 'required at least 7 digit!'],
     },
     tokens: [
         {
